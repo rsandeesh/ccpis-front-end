@@ -10,6 +10,7 @@ const Login = (props) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [user, setUser] = useState('');
 
     const navigate = useNavigate();
     const responseGoogle = (response) => {
@@ -18,19 +19,24 @@ const Login = (props) => {
         console.log(decoded);
         localStorage.setItem('user', JSON.stringify(decoded));
         const { name, sub, picture } = decoded;
+        console.log(decoded);
+        navigate('/home');
+    }
 
-        const doc = {
-            _id: sub,
-            _type: 'user',
-            userName: name,
-            image: picture,
-        }
+    const login = () => {
+        const loggedUser = {
+            user: { email },
+            token: { password }
+        };
+        console.log(loggedUser);
+        setUser(loggedUser)
+        localStorage.setItem('dataKey', JSON.stringify(loggedUser));
+        console.log(user);
+        navigate('/home')
+    }
 
-
-        // client.createIfNotExists(doc)
-        //     .then(() => {
-        //         navigate('/', { replace: true })
-        //     })
+    const navigateToRegister = () => {
+        navigate('/register');
     }
 
     const handleSubmit = (e) => {
@@ -55,18 +61,18 @@ const Login = (props) => {
                         {/* <img src={logo} width='130px' alt='logo' /> */}
                     </div>
                     <div className='auth-form-container'>
-                        <Form className='flex flex-col '>
-                            <Form.Group className="mb-3  flex flex-col " controlId="formBasicEmail">
+                        <Form className='flex flex-col ' onSubmit={login}>
+                            <Form.Group className="mb-3  flex flex-col " controlId="formBasicEmail" onChange={e => setEmail(e.target.value)}>
                                 <Form.Label>Email address</Form.Label>
                                 <Form.Control type="email" placeholder="Enter email" />
                             </Form.Group>
 
                             <Form.Group className="mb-3 flex flex-col" controlId="formBasicPassword">
                                 <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder="Password" />
+                                <Form.Control type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                                <Form.Check type="checkbox" label="Check me out" />
+                                <Form.Check type="checkbox" label="Agree terms and conditions" />
                             </Form.Group>
                             <Button variant="primary" type="submit">
                                 Submit
@@ -92,7 +98,7 @@ const Login = (props) => {
                                 </GoogleOAuthProvider>
                             </div>
                         </Form>
-                        <button className='link-btn m-3 ' onClick={() => props.onFormSwitch('register')}>Don't have an account? Register here.</button>
+                        <button className='link-btn m-3 ' onClick={navigateToRegister}>Don't have an account? Register here.</button>
                     </div>
                 </div>
             </div>

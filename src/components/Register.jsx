@@ -1,15 +1,29 @@
 import React, { useState } from 'react'
 import earthVideo from '../assets/earthVideo.mp4';
 import { Button, Form } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 
-const Register = (props) => {
+const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [country, setCountry] = useState('');
     const [name, setName] = useState('');
-    const handleSubmit = (e) => {
+    const navigate = useNavigate();
+    const navigateToLogin = () => {
+        navigate('/login');
+    }
+
+    const createUser = (e) => {
         e.preventDefault();
-        console.log(email);
+        const user = {
+            name: { name },
+            email: { email },
+            country: { country },
+            password: { password }
+        };
+        console.log(user);
+        navigate('/login');
     }
 
     return (
@@ -27,30 +41,51 @@ const Register = (props) => {
                 />
                 <div className='absolute flex flex-col justify-center items-center top-0 right-0 left-0 bottom-0 bg-blackOverlay w-full'>
                     <div className='auth-form-container'>
-                        <Form className='flex flex-col '>
-                            <Form.Group className="mb-3  flex flex-col " controlId="formBasicEmail">
-                                <Form.Label>First Name</Form.Label>
-                                <Form.Control type="name" placeholder="Enter first name" />
+                        <Form className='flex flex-col ' onSubmit={createUser}>
+                            <Form.Group className='mb-3 flex flex-col' onChange={(e) => setName(e.target.value)}>
+                                <Form.Label>First name</Form.Label>
+                                <Form.Control
+                                    required
+                                    type="text"
+                                    placeholder="First name"
+                                    defaultValue="Mark"
+                                />
                             </Form.Group>
-
-                            <Form.Group className="mb-3 flex flex-col" controlId="formBasicPassword">
+                            <Form.Group className='mb-3 flex flex-col' onChange={(e) => setName(name + e.target.value)}>
                                 <Form.Label>Last name</Form.Label>
-                                <Form.Control type="name" placeholder="Enter last name" />
+                                <Form.Control
+                                    required
+                                    type="text"
+                                    placeholder="Last name"
+                                    defaultValue="Otto"
+                                />
                             </Form.Group>
-
-                            <Form.Group className="mb-3 flex flex-col" controlId="formBasicPassword">
+                            <Form.Group className='mb-3 flex flex-col' onChange={(e) => setEmail(e.target.value)}>
                                 <Form.Label>Email</Form.Label>
-                                <Form.Control type="name" placeholder="Enter email" />
+                                <Form.Control
+                                    type="email"
+                                    placeholder="Email"
+                                    required
+                                />
+                            </Form.Group>
+                            <Form.Group className='mb-3 flex flex-col' onChange={(e) => setCountry(e.target.value)}>
+                                <Form.Label>Country</Form.Label>
+                                <Form.Control type="text" placeholder="Country" required />
+                            </Form.Group>
+                            <Form.Group className='mb-3 flex flex-col'>
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control type="password" placeholder="Password" required />
+                            </Form.Group>
+                            <Form.Group className='mb-3 flex flex-col' onChange={(e) => setPassword(e.target.value)}>
+                                <Form.Label>Confirm Password</Form.Label>
+                                <Form.Control type="password" placeholder="Confirm Password" required />
                             </Form.Group>
 
-                            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                                <Form.Check type="checkbox" label="Agree terms and conditions" />
-                            </Form.Group>
                             <Button variant="primary" type="submit">
                                 Submit
                             </Button>
                         </Form>
-                        <button className='link-btn m-3' onClick={() => props.onFormSwitch('login')}>Already have an account? Login here.</button>
+                        <button className='link-btn m-3' onClick={navigateToLogin}>Already have an account? Login here.</button>
                     </div>
                 </div>
             </div>
