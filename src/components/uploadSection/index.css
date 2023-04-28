@@ -1,0 +1,32 @@
+.upload-container {
+
+    color: black;
+    margin-left: 0%;
+    width: 100%;
+}
+
+.upload-widget{
+
+    padding: 100px;
+    margin: 50px;
+}
+.card{
+    color: black!important;
+    padding: 0!important;
+    min-height: 600px;
+}
+
+.card-header{
+    color: black!important;
+}
+
+.card-body{
+    position: relative!important;
+}
+
+.card-body>button{
+    position: absolute;
+    bottom: 20px;
+    float: right;
+    right: 20px;
+}

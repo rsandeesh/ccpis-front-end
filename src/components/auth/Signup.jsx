@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Form, Card, Button, Alert, Container } from 'react-bootstrap';
+import earthVideo from '../../assets/videos/earthVideo.mp4';
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useAuth } from '../context/AuthContext';
@@ -31,40 +32,57 @@ const Signup = () => {
     }
     return (
         <>
-            <Container className='d-flex align-items-center justify-content-center' style={{ minHeight: '100vh' }}>
-                <div className='w-100' style={{ maxWidth: '400px' }}>
-                    <Card className='card'>
-                        <Card.Body>
-                            <h2 className='text-center mb-4' style={{ color: 'black' }}>Sign up</h2>
-                            {currentUser.email}
-                            {error && <Alert variant='danger'>{error}</Alert>}
-                        </Card.Body>
-                        <Form onSubmit={handleSubmit}>
-                            <Form.Group id='email'>
-                                <Form.Label>Email</Form.Label>
-                                <Form.Control type='email' ref={emailRef} required />
-                            </Form.Group>
+            <div className='flex justify-start items-center flex-col h-screen w-full h-ful'>
+                <div className='relative w-full h-full'>
+                    <video
+                        src={earthVideo}
+                        type="video/mp4"
+                        loop
+                        controls={false}
+                        muted
+                        autoPlay
+                        className='w-full h-full object-cover'
+                    />
+                    <div className='absolute flex flex-col justify-center items-center top-0 right-0 left-0 bottom-0 bg-blackOverlay w-full '>
 
-                            <Form.Group id='password'>
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control type='password' ref={passwordRef} required />
-                            </Form.Group>
+                        <Container className='d-flex align-items-center justify-content-center' style={{ minHeight: '100vh' }}>
+                            <div className='w-100 ' style={{ maxWidth: '400px' }}>
+                                <Card className='card bg-transparent'>
+                                    <Card.Body>
+                                        <h2 className='text-center mb-4' style={{ color: 'white' }}>Sign up</h2>
+                                        {error && <Alert variant='danger'>{error}</Alert>}
 
-                            <Form.Group id='password-confirm'>
-                                <Form.Label>Password Confirmation</Form.Label>
-                                <Form.Control type='password' ref={passwordConfirmRef} required />
-                            </Form.Group>
-                            <Button disabled={loading} className='w-100 mt-4' type='submit' >
-                                Sign up
-                            </Button>
-                        </Form>
+                                        <Form onSubmit={handleSubmit}>
+                                            <Form.Group id='email'>
+                                                <Form.Label className='labels'>Email</Form.Label>
+                                                <Form.Control type='email' ref={emailRef} required />
+                                            </Form.Group>
 
-                    </Card>
+                                            <Form.Group id='password'>
+                                                <Form.Label className='labels'>Password</Form.Label>
+                                                <Form.Control type='password' ref={passwordRef} required />
+                                            </Form.Group>
+
+                                            <Form.Group id='password-confirm'>
+                                                <Form.Label className='labels'>Password Confirmation</Form.Label>
+                                                <Form.Control type='password' ref={passwordConfirmRef} required />
+                                            </Form.Group>
+                                            <Button disabled={loading} className='w-100 mt-4' type='submit' >
+                                                Sign up
+                                            </Button>
+                                        </Form>
+                                        <div className="w-100 text-center text-white mt-2 link" style={{ color: 'black' }}>
+                                            Already have an account ? <Link to='/login'>Log In</Link>
+                                        </div>
+                                    </Card.Body>
+                                </Card>
+                            </div>
+                        </Container>
+                    </div>
                 </div>
-            </Container>
-            <div className="w-100 text-center mt-2 link" style={{ color: 'black' }}>
-                Already have an account ? <Link to='/login'>Log In</Link>
+
             </div>
+
         </>);
 }
 
