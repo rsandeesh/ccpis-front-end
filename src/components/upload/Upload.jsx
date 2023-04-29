@@ -16,7 +16,8 @@ const Upload = (imgRes: { response: () => {} }) => {
     const addFile = (event) => {
         const file = event.target.files[0];
         file.isUploading = true;
-        setFiles([...files, file])
+        const tempArr = [...files, file];
+        setFiles(tempArr)
     }
     // function createImageFromArray(array)
     // {
@@ -89,12 +90,18 @@ const Upload = (imgRes: { response: () => {} }) => {
         const filesArr = files
         console.log(filesArr)
         let formData = new FormData();
-        formData.append('files[]', files[0]);
-        await detectPatterns(formData).then((value:string[]) => {
+        console.log(files)
+
+        for (let index = 0; index < filesArr.length; index++) {
+            formData.append('files[]', filesArr[index]);
+        }
+
+        await detectPatterns(formData).then((value: string[]) => {
             console.log(value)
-            const imageArray=[];
+            const imageArray = [];
             value.forEach(value1 => {
-                imageArray.push('data:image/jpg;base64, '+value1)
+                const tempJson = JSON.parse(value1);
+                imageArray.push('data:image/jpg;base64, ' + tempJson.base64Img)
             })
             console.log(imageArray);
             setImgSrc(imageArray);
@@ -104,35 +111,33 @@ const Upload = (imgRes: { response: () => {} }) => {
 
             // console.log(createImageFromArray(unitArray));
             // console.log(unitArray);
-        //     var blob = new Blob( [ unitArray ], { type: "image/jpeg" } );
-        //     var urlCreator = window.URL || window.webkitURL;
-        //     var imageUrl = urlCreator.createObjectURL( blob );
-        //
-        //
-        //
-        // const canvas = document.getElementById('canvas');
-        // const ctx = canvas.getContext('3d');
-        // const arr = new Uint8ClampedArray(8820000);
-//
-// // Iterate through every pixel
-//         for (let i = 0; i < arr.length; i += 4) {
-//             arr[i + 0] = 0;    // R value
-//             arr[i + 1] = 190;  // G value
-//             arr[i + 2] = 0;    // B value
-//             arr[i + 3] = 255;  // A value
-//         }
+            //     var blob = new Blob( [ unitArray ], { type: "image/jpeg" } );
+            //     var urlCreator = window.URL || window.webkitURL;
+            //     var imageUrl = urlCreator.createObjectURL( blob );
+            //
+            //
+            //
+            // const canvas = document.getElementById('canvas');
+            // const ctx = canvas.getContext('3d');
+            // const arr = new Uint8ClampedArray(8820000);
+            //
+            // // Iterate through every pixel
+            //         for (let i = 0; i < arr.length; i += 4) {
+            //             arr[i + 0] = 0;    // R value
+            //             arr[i + 1] = 190;  // G value
+            //             arr[i + 2] = 0;    // B value
+            //             arr[i + 3] = 255;  // A value
+            //         }
 
-        // let imageData = new ImageData(4*unitArray, 700,700);
-        //
-        // ctx.putImageData(imageData, 20, 20);
+            // let imageData = new ImageData(4*unitArray, 700,700);
+            //
+            // ctx.putImageData(imageData, 20, 20);
         })
     }
 
     return (
         <div className='upload'>
             <FileUpload
-                files={files}
-                setFiles={setFiles}
                 addFile={addFile}
             />
             <FileList files={files}

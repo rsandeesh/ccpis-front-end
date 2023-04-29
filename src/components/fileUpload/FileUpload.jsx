@@ -7,6 +7,7 @@ import axios from 'axios'
 const FileUpload = (data: { addFile: () => {} }) => {
 
     const uploadHandler = (event) => {
+        console.log(event)
         data.addFile(event);
 
         // axios.post('', formData)
@@ -24,7 +25,7 @@ const FileUpload = (data: { addFile: () => {} }) => {
         <>
             <div className='file-card'>
                 <div className='file-inputs'>
-                    <input type='file' onChange={uploadHandler} />
+                    <input type='file' onChangeCapture={uploadHandler} />
                     <button>
                         <i>
                             {<FontAwesomeIcon icon={faPlus} />}

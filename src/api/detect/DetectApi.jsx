@@ -1,6 +1,7 @@
 import axios from "../axios";
 
 export const detectPatterns = async (formData) => {
+    console.log(formData.getAll('files[]'))
     return await axios.post(`/upload`, formData,
         {
             headers: {
