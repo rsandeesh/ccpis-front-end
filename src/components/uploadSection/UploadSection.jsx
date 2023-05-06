@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,47 +9,35 @@ import Footer from '../footer/Footer';
 import Navbar from '../navBar/Navbar';
 import './index.css';
 import Sketch from "react-p5";
-import backImage from '../../assets/images/fish.jpg';
+import backImage from '../../assets/images/test.jpg';
+import BoundingBox from '../drawBox/DrawBoundingBox';
+import DrawSketch from "../sketch/DrawSketch";
+import SketchElement from "../sketch/SketchElement";
 
 const UploadSection = () => {
-    let x = 0.0;
-    let y =  1024.4383544921875;
-let img;
+    const [patterns, setPatterns] = useState([]);
+    const [result, setResult] = useState(null);
+
+
+    let dataa;
+
+    const boundingBox = {
+        x: 0,
+        y: 779.0324096679688,
+        height: 445.69482421875,
+        width: 1098.7904052734375,
+    }
+
     const [p5, setP5] = useState(null);
     const [imgSrc, setImgSrc] = useState([])
-    const [image, setImage] = useState(null)
 
-    const getImages = (imgArr:string[]) => {
-        // setImgSrc(imgArr)
-    }
-    const setup = (p5, canvasParentRef) => {
-        setP5(p5);
-        // use parent to render the canvas in this ref
-        // (without that p5 will render the canvas outside of your component)
-           let cvs =  p5.createCanvas(1066, 1066).parent(canvasParentRef);
+    const [bbox, setBbox] = useState(null)
 
-        p5.loadImage(backImage,img => {
-            console.log(img);
-            // console.log(backImage);
-            p5.image(img,0,0);
-            p5.rect(0.8836984038352966,
-                839.2400512695312,
-                238.73464965820312,
-                1213.122314453125);
-            p5.background(220, 10);
-            p5.draw();
-        })
-    };
 
-    const draw = (p5) => {
-
-        // p5.background(0);
-        // p5.ellipse(x, y, 973.2594604492188, 1400.0);
-        // p5.draw();
-        // NOTE: Do not use setState in the draw function or in functions that are executed
-        // in the draw function...
-        // please use normal variables or class properties for these purposes
-        // x++;
+    const handleChildResponse = (data) => {
+        console.log('INSIDE PARENT -->', data);
+        setResult(data);
+        // createSketch(data)
     };
 
     return (
@@ -64,7 +52,7 @@ let img;
                             <Card.Body>
                                 {/* <Card.Title>Upload Image To See The Results</Card.Title> */}
                                 <div className="upload-widger">
-                                    <Upload response={getImages} />
+                                    <Upload patterns={setPatterns} onResponse={handleChildResponse} />
                                 </div>
                             </Card.Body>
                         </Card>
@@ -74,12 +62,7 @@ let img;
                         <Card>
                             <Card.Header>Featured</Card.Header>
                             <Card.Body>
-                                <Sketch setup={setup} draw={draw} />
-                                {/*{*/}
-                                {/*    imgSrc.map((value,index) =>*/}
-                                {/*        <img key={index} src={value} alt="sds"/>*/}
-                                {/*    )*/}
-                                {/*}*/}
+                                {result && <SketchElement result={result}/>}
                             </Card.Body>
                         </Card>
                     </Col>

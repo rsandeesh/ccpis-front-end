@@ -1,13 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './index.css'
 import FileUpload from '../fileUpload/FileUpload';
 import FileList from '../fileList/fileList';
 import { Button } from 'react-bootstrap';
 import { detectPatterns } from '../../api/detect/DetectApi';
 
-const Upload = (imgRes: { response: () => {} }) => {
+const Upload = ( data: { onResponse: () => {} } ) => {
     const [files, setFiles] = useState([])
     const [imgSrc, setImgSrc] = useState([])
+    const [result, setResult] = useState([])
+
+
+    // useEffect(() => {
+    //     if (result.length !== 0) {
+    //         console.log('INSIDE CHILD __>', result)
+    //         patterns(result)
+    //     }
+    // }, [result])
 
     const removeFile = (filename) => {
         const files1 = files.filter(file => file.name !== filename);
@@ -53,59 +62,58 @@ const Upload = (imgRes: { response: () => {} }) => {
     //     return image;
     // }
 
-    function drawBoundingBoxesOnImage(image, results) {
-        // Create a new canvas element with the same dimensions as the image
-        const canvas = document.createElement('canvas');
-        canvas.width = image.width;
-        canvas.height = image.height;
-
-        // Draw the image onto the canvas
-        const context = canvas.getContext('2d');
-        context.drawImage(image, 0, 0);
-
-        // Loop through the results and draw a bounding box for each object
-        results.forEach(result => {
-            const { x, y, width, height, classLabel } = result;
-            context.beginPath();
-            context.rect(x, y, width, height);
-            context.lineWidth = 2;
-            context.strokeStyle = 'red';
-            context.stroke();
-
-            // Add the class label as text next to the bounding box
-            context.font = '14px Arial';
-            context.fillStyle = 'red';
-            context.fillText(classLabel, x, y - 5);
-        });
-
-        // Convert the canvas to an image element
-        const resultImage = new Image();
-        resultImage.src = canvas.toDataURL();
-
-        return resultImage;
-    }
+    // function drawBoundingBoxesOnImage(image, results) {
+    //     // Create a new canvas element with the same dimensions as the image
+    //     const canvas = document.createElement('canvas');
+    //     canvas.width = image.width;
+    //     canvas.height = image.height;
+    //
+    //     // Draw the image onto the canvas
+    //     const context = canvas.getContext('2d');
+    //     context.drawImage(image, 0, 0);
+    //
+    //     // Loop through the results and draw a bounding box for each object
+    //     results.forEach(result => {
+    //         const { x, y, width, height, classLabel } = result;
+    //         context.beginPath();
+    //         context.rect(x, y, width, height);
+    //         context.lineWidth = 2;
+    //         context.strokeStyle = 'red';
+    //         context.stroke();
+    //
+    //         // Add the class label as text next to the bounding box
+    //         context.font = '14px Arial';
+    //         context.fillStyle = 'red';
+    //         context.fillText(classLabel, x, y - 5);
+    //     });
+    //
+    //     // Convert the canvas to an image element
+    //     const resultImage = new Image();
+    //     resultImage.src = canvas.toDataURL();
+    //
+    //     return resultImage;
+    // }
 
     const handleClick = async (e) => {
-        e.preventDefault()
-        const filesArr = files
-        console.log(filesArr)
+        e.preventDefault();
+        const filesArr = files;
         let formData = new FormData();
-        console.log(files)
 
         for (let index = 0; index < filesArr.length; index++) {
-            formData.append('files[]', filesArr[index]);
+            formData.append('file', filesArr[index]);
         }
 
-        await detectPatterns(formData).then((value: string[]) => {
-            console.log(value)
-            const imageArray = [];
-            value.forEach(value1 => {
-                const tempJson = JSON.parse(value1);
-                imageArray.push('data:image/jpg;base64, ' + tempJson.base64Img)
-            })
-            console.log(imageArray);
-            setImgSrc(imageArray);
-            imgRes.response(imageArray)
+        await detectPatterns(formData).then((value: any) => {
+            setResult(value);
+            data.onResponse(value);
+            // const imageArray = [];
+            // value.forEach(value1 => {
+            //     const tempJson = JSON.parse(value1);
+            //     imageArray.push('data:image/jpg;base64, ' + tempJson.base64Img)
+            // })
+            // console.log(imageArray);
+            // setImgSrc(imageArray);
+            // imgRes.response(imageArray)
             // console.log(value.data);
             // const unitArray = new Uint8Array(value);
 
