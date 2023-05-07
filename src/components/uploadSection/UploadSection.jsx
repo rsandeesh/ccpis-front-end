@@ -1,23 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState} from 'react'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Card, Button } from 'react-bootstrap';
+import {Card} from 'react-bootstrap';
 
 import Upload from '../upload/Upload';
 import Footer from '../footer/Footer';
 import Navbar from '../navBar/Navbar';
 import './index.css';
-import Sketch from "react-p5";
-import backImage from '../../assets/images/test.jpg';
-import BoundingBox from '../drawBox/DrawBoundingBox';
-import DrawSketch from "../sketch/DrawSketch";
 import SketchElement from "../sketch/SketchElement";
 
 const UploadSection = () => {
     const [patterns, setPatterns] = useState([]);
     const [result, setResult] = useState(null);
-
+    const [components, setComponents] = useState(null)
 
     let dataa;
 
@@ -37,13 +33,17 @@ const UploadSection = () => {
     const handleChildResponse = (data) => {
         console.log('INSIDE PARENT -->', data);
         setResult(data);
-        // createSketch(data)
+        // const comp = data.map((item, index) => {
+        //     return <SketchElement key={index} result={item}/>
+        // })
+        // console.log(comp);
+        // setComponents(comp)
     };
 
     return (
         <>
-            <Navbar />
-            <Container className='upload-container' style={{ marginTop: '115px', marginBottom: '115px' }}>
+            <Navbar/>
+            <Container className='upload-container' style={{marginTop: '115px', marginBottom: '115px'}}>
                 <Row>
                     <Col xs={12} sm={12} lg={6}>
 
@@ -52,7 +52,7 @@ const UploadSection = () => {
                             <Card.Body>
                                 {/* <Card.Title>Upload Image To See The Results</Card.Title> */}
                                 <div className="upload-widger">
-                                    <Upload patterns={setPatterns} onResponse={handleChildResponse} />
+                                    <Upload patterns={setPatterns} onResponse={handleChildResponse}/>
                                 </div>
                             </Card.Body>
                         </Card>
@@ -68,7 +68,7 @@ const UploadSection = () => {
                     </Col>
                 </Row>
             </Container>
-            <Footer />
+            <Footer/>
         </>
 
     )
