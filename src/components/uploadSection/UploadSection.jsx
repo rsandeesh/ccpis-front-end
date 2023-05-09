@@ -9,63 +9,84 @@ import Footer from '../footer/Footer';
 import Navbar from '../navBar/Navbar';
 import './index.css';
 import SketchElement from "../sketch/SketchElement";
+import {Chip} from "@mui/material";
 
 const UploadSection = () => {
     const [patterns, setPatterns] = useState([]);
     const [result, setResult] = useState(null);
-    const [components, setComponents] = useState(null)
-
-    let dataa;
-
-    const boundingBox = {
-        x: 0,
-        y: 779.0324096679688,
-        height: 445.69482421875,
-        width: 1098.7904052734375,
-    }
-
-    const [p5, setP5] = useState(null);
-    const [imgSrc, setImgSrc] = useState([])
-
-    const [bbox, setBbox] = useState(null)
-
+    const [files, setFiles] = useState(null)
+    const [labels, setLabels] = useState(null)
 
     const handleChildResponse = (data) => {
         console.log('INSIDE PARENT -->', data);
         setResult(data);
-        // const comp = data.map((item, index) => {
-        //     return <SketchElement key={index} result={item}/>
-        // })
-        // console.log(comp);
-        // setComponents(comp)
+        const labelList=[];
+        for (let i = 0; i < data.length; i++) {
+            const arrayLength = Object.keys(data[i]).length
+            for (let j = 0; j < arrayLength; j++) {
+                labelList.push(data[i]['b' + j][0])
+            }
+        }
+        setLabels([...new Set(labelList)])
     };
+
+    const setFilesResponse = (data) => {
+        console.log('INSIDE Files -->', data);
+        setFiles(data);
+    };
+
+    const handleClick = (data)=>{
+        console.log(data.target.textContent);
+        window.open('/services?type='+data.target.textContent,"_self")
+    }
 
     return (
         <>
             <Navbar/>
             <Container className='upload-container' style={{marginTop: '115px', marginBottom: '115px'}}>
                 <Row>
-                    <Col xs={12} sm={12} lg={6}>
+                    <Col xs={12} sm={12} lg={12}>
 
                         <Card>
                             <Card.Header>Upload Image</Card.Header>
                             <Card.Body>
-                                {/* <Card.Title>Upload Image To See The Results</Card.Title> */}
-                                <div className="upload-widger">
-                                    <Upload patterns={setPatterns} onResponse={handleChildResponse}/>
+                                <div style={{width:'100%'}}>
+                                    <Upload patterns={setPatterns} onResponse={handleChildResponse} setFiles={setFilesResponse}/>
                                 </div>
                             </Card.Body>
                         </Card>
 
                     </Col>
-                    <Col xs={12} sm={12} lg={6}>
-                        <Card>
-                            <Card.Header>Featured</Card.Header>
-                            <Card.Body>
-                                {result && <SketchElement result={result}/>}
-                            </Card.Body>
-                        </Card>
-                    </Col>
+                    {
+                        result &&
+                        <Col xs={12} sm={12} lg={12}>
+                            <Card>
+                                <Card.Header>Featured</Card.Header>
+                                <Card.Body>
+                                    {result && <SketchElement result={result} files={files}/>}
+
+
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    }
+
+                    {
+                        result &&
+                        <Col xs={12} sm={12} lg={12}>
+                            <Card>
+                                <Card.Header>PATTERNS FOUND</Card.Header>
+                                <Card.Body style={{display:'inline-flex'}}>
+                                    {result && labels && labels.map((data,index)=>{
+                                        return ( <Col xs={12} sm={12} lg={2}>
+                                            <Chip label={data} onClick={handleClick}/>
+                                        </Col>)
+                                    })}
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    }
+
                 </Row>
             </Container>
             <Footer/>

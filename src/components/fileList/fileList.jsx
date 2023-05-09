@@ -1,5 +1,6 @@
 import React from 'react'
 import FileItem from '../fileItem/FileItem'
+import './index.css';
 
 const FileList = (data: { files: any, removeFile: (filename: string) => {} }) => {
     console.log(data.files)
@@ -9,7 +10,7 @@ const FileList = (data: { files: any, removeFile: (filename: string) => {} }) =>
         data.removeFile(filename)
     }
     return (
-        <ul className="file-list">
+        <ul className="file-list" >
             {
                 data.files &&
                 data.files.map(f => <FileItem

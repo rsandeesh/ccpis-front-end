@@ -13,7 +13,6 @@
 .card{
     color: black!important;
     padding: 0!important;
-    min-height: 600px;
 }
 
 .card-header{
@@ -22,6 +21,7 @@
 
 .card-body{
     position: relative!important;
+    overflow: auto!important;
 }
 
 .card-body>button{
@@ -29,4 +29,8 @@
     bottom: 20px;
     float: right;
     right: 20px;
+}
+
+.card-body>div{
+    display: flex !important;
 }

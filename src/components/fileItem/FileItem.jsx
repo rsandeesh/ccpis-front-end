@@ -10,12 +10,8 @@ const FileItem = (data: { file: any, deleteFile: (filename: any) => {} }) => {
             key={data.file.name}
         >
             <FontAwesomeIcon icon={faImage} />
-            <p>{data.file.name}</p>
+            <div>{data.file.name}</div>
             <div className="actions">
-                {/* {file.isUploading &&
-                    <FontAwesomeIcon
-                        icon={faSpinner} className='fa-spin' />} */}
-                {/* {!file.isUploading && */}
                 <FontAwesomeIcon
                     icon={faTrash}
                     onClick={() => data.deleteFile(data.file.name)} />

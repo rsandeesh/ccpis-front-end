@@ -18,10 +18,10 @@
 }
 
 
-input {
+input[type="file"] {
     position: relative !important;
     text-align: right !important;
-    opacity: 0 !important;
+    opacity: 0;
     z-index: 2 !important;
     cursor: pointer !important;
     height: 46px !important;

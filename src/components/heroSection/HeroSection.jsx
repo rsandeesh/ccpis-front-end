@@ -10,19 +10,7 @@ import { useNavigate } from "react-router-dom";
 function HeroSection() {
 
     const [error, setError] = useState("");
-    const { logout } = useAuth();
     const navigate = useNavigate();
-
-    async function handleLogout() {
-        setError("");
-
-        try {
-            await logout();
-            navigate('/');
-        } catch {
-            setError('Failed to log out')
-        }
-    }
 
     return (
         <div className="hero-container">
@@ -45,7 +33,6 @@ function HeroSection() {
                 >
                     WATCH TRAILER <i className="far fa-play-circle" />
                 </Button>
-                <Button onClick={handleLogout}>Log out</Button>
             </div>
         </div>
     );

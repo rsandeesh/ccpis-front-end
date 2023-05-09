@@ -2,13 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Button } from "../button/Button";
 import { Link } from "react-router-dom";
 import "./index.css";
+import {useAuth} from "../context/AuthContext";
 
 function Navbar() {
+    const { logout } = useAuth();
     const [click, setClick] = useState(false);
     const [button, setButton] = useState(true);
 
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
+    const logOut = async () => {
+        sessionStorage.clear();
+        localStorage.clear();
+        await logout()
+    };
 
     const showButton = () => {
         if (window.innerWidth <= 960) {
@@ -43,15 +50,6 @@ function Navbar() {
                         </li>
                         <li className="nav-item">
                             <Link
-                                to="/services"
-                                className="nav-links"
-                                onClick={closeMobileMenu}
-                            >
-                                Results
-                            </Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link
                                 to="/products"
                                 className="nav-links"
                                 onClick={closeMobileMenu}
@@ -59,17 +57,14 @@ function Navbar() {
                                 Product
                             </Link>
                         </li>
-
-                        <li>
+                        <li className="nav-item">
                             <Link
-                                to="/sign-up"
-                                className="nav-links-mobile"
-                                onClick={closeMobileMenu}
+                                className="nav-links"
+                                onClick={logOut}
                             >
-                                Sign Up
+                                Logout
                             </Link>
                         </li>
-                        {button && <Button buttonStyle="btn--outline" className="sign-up-btn">SIGN UP</Button>}
                     </ul>
                 </div>
             </nav>

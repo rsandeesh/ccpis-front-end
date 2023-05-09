@@ -5,3 +5,13 @@
     color: black !important;
 }
 
+.upload{
+    position: relative;
+    width: 100%;
+}
+
+#predictBtn{
+    position: relative;
+    float: right;
+    right: 0!important;
+}
